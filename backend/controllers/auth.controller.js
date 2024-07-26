@@ -13,6 +13,7 @@ export const signup = async (req, res) => {
     }
 
     const user = await User.findOne({ username });
+    const name = fullName.toLowerCase();
 
     if (user) {
       return res.status(400).json({
@@ -27,7 +28,7 @@ export const signup = async (req, res) => {
     const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
 
     const newUser = new User({
-      fullName,
+      fullName: name,
       username,
       password: hashedPassword,
       verifyPassword,
