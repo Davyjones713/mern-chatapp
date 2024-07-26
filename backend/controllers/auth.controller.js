@@ -4,7 +4,7 @@ import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
   try {
-    const { firstName, username, password, verifyPassword, gender } = req.body;
+    const { fullName, username, password, verifyPassword, gender } = req.body;
 
     if (password !== verifyPassword) {
       return res.status(400).json({
@@ -27,7 +27,7 @@ export const signup = async (req, res) => {
     const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
 
     const newUser = new User({
-      firstName,
+      fullName,
       username,
       password: hashedPassword,
       verifyPassword,
@@ -41,7 +41,7 @@ export const signup = async (req, res) => {
 
       res.status(201).json({
         _id: newUser._id,
-        firstName: newUser.firstName,
+        fullName: newUser.fullName,
         username: newUser.username,
         gender: newUser.gender,
         profilePic: newUser.profilePic,
@@ -59,15 +59,16 @@ export const login = async (req, res) => {
 
     const user = await User.findOne({ username });
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(400).json({ message: "Wrong username or password" });
+      return res.status(401).json({ error: "Wrong username or password" });
     }
 
     generateTokenAndSetCookie(user._id, res);
     res.status(201).json({
-      firstName: user.firstName,
+      fullName: user.fullName,
       username: user.username,
       gender: user.gender,
       profilePic: user.profilePic,
+      id: user._id,
     });
   } catch (error) {
     console.log("Error in login controller", error.message, error.stack);
