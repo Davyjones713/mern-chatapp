@@ -20,7 +20,7 @@ const Sidebar = () => {
       return toast.error("Search input must have min 3 characters");
     }
     const filteredconv = conversations.filter((el) => {
-      return el.firstName.toLowerCase().includes(str.toLowerCase());
+      return el.fullName.toLowerCase().includes(str.toLowerCase());
     });
     setFilteredConversations(filteredconv);
   };
