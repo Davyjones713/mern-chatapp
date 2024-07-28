@@ -15,7 +15,6 @@ const Sidebar = () => {
     filter(search);
   };
   const filter = (str) => {
-    console.log(str);
     if (str?.length < 3) {
       return toast.error("Search input must have min 3 characters");
     }
